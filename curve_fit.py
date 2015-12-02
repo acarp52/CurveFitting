@@ -1,3 +1,6 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 """
 Final project for Stats 251
 
@@ -17,9 +20,12 @@ def main():
                 tempArr.append(float(num))
             data.append(tempArr)
 
-    intervals = data[0]
-    nums = data[1]
-    print(intervals)
-    print(nums)
+    xdata = data[0]
+    ydata = data[1]
+    print(xdata)
+    print(ydata)
+
+    plt.plot(xdata, ydata, 'ko')
+    plt.show()
 
 main()
