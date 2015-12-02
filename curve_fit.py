@@ -12,8 +12,14 @@ def main():
     with open("classB7.dat", "r") as ins:
         data = []
         for line in ins:
-            data.append(float(line.rstrip('\n')))
+            tempArr = []
+            for num in line.split('\t'):
+                tempArr.append(float(num))
+            data.append(tempArr)
 
-    print(data)
+    intervals = data[0]
+    nums = data[1]
+    print(intervals)
+    print(nums)
 
 main()
