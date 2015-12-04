@@ -26,6 +26,20 @@ def main():
     print(ydata)
 
     plt.plot(xdata, ydata, 'ko')
+
+    yfit=bestFit(xdata,ydata)
+    plt.plot(xdata,yfit)
+
     plt.show()
+
+
+def bestFit(xdata, ydata):
+    """return the y values representing the line of best fit"""
+    coefficients=np.polyfit(xdata, ydata, 1)
+    polynomial=np.poly1d(coefficients)
+    return polynomial(xdata)
+
+
+
 
 main()
