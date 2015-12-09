@@ -67,6 +67,9 @@ def linearfit(x, y, yerr):
 
     x2 = np.linspace(np.min(x), np.max(x), 100)
     y2 = np.linspace(np.min(yfit), np.max(yfit), 100)
+    if p[0]<0:
+        y2=np.linspace(np.max(yfit),np.min(yfit),100)
+
     # Confidence interval for the linear fit, with n-2 degrees of freedom:
     t = stats.t.ppf(0.90, n - 2)
     ci = t * s_err * np.sqrt(1/n + (x2 - np.mean(x))**2/np.sum((x-np.mean(x))**2))
