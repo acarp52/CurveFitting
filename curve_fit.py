@@ -49,6 +49,68 @@ def makeFakeData(fn, data):
     return fn(data)+np.random.normal(size=len(data))
     # return np.random.normal(size=len(data))
 
+def cdfQuadFit(fn, fnName):
+    """plots CDFSs for the 3 coefficients of a quadratic for given function (fn)"""
+    #lists of coefficients
+    c0=[]
+    c1=[]
+    c2=[]
+    xrd=np.linspace(-1,1,20)
+
+    #generates 1000 synthetic sample sets of size 20 and quadratic coefficients for them
+    for _ in range(1000):
+        yrd=makeFakeData(fn,xrd)
+        c2x, c1x, c0x=np.polyfit(xrd,yrd,2)
+        c2.append(c2x)
+        c1.append(c1x)
+        c0.append(c0x)
+
+    #cdf for c0
+    counts,bins=np.histogram(c0,100)
+    c0cum=np.cumsum(counts)
+    plt.plot(bins[1:],c0cum/1000.0)
+    plt.suptitle("CDF of c0 for function " +fnName)
+    plt.show()
+
+    #cdf for c1
+    counts,bins=np.histogram(c1,100)
+    c1cum=np.cumsum(counts)
+    plt.plot(bins[1:],c1cum/1000.0)
+    plt.suptitle("CDF of c1 for function " + fnName)
+    plt.show()
+
+    #cdf for c2
+    counts,bins=np.histogram(c2,100)
+    c2cum=np.cumsum(counts)
+    plt.suptitle("CDF of c2 for function " + fnName)
+    plt.plot(bins[1:],c2cum/1000.0)
+    plt.show()
+
+def scatLinFit(fn,fnName):
+    """creates a scatterplot of linear regression coefficients for a given function (fn)"""
+
+    m=[] #c1
+    b=[] #c0
+    xrd=np.linspace(-1,1,20)
+    #gets linear regression coefficients of 1000 synthetic samples, each of size 20
+    for _ in range(1000):
+        yrd=makeFakeData(fn,xrd)
+        mm,bb=np.polyfit(xrd,yrd,1)
+        m.append(mm)
+        b.append(bb)
+
+    plt.scatter(b,m)
+    plt.xlabel('y-intercept', fontsize=16)
+    plt.ylabel('slope', fontsize=16)
+    plt.suptitle("Linear regression coefficients of 1000 samples for function " + fnName)
+
+    #trouble getting correlation
+    #x,y=np.asarray(bb),np.asarray(mm)
+    # R2 = np.corrcoef(x, y)[0, 1]**2  # coefficient of determination between x and y
+   # print(R2)
+    plt.show()
+
+
 def linearfit(x, y, yerr):
     """Linear fit of x and y with uncertainty and plots results."""
 
@@ -105,13 +167,27 @@ def main():
     xdata = data[0]
     ydata = data[1]
 
+    """
+    cdfQuadFit(fn1, "a")
+    cdfQuadFit(fn2, "b")
+    cdfQuadFit(fn3, "c")
+    """
+
+    """
+    scatLinFit(fn2,"b")
+    """
+
+
+    """
     yerr = np.abs(np.random.randn(len(ydata))) + 2
     linearfit(xdata, ydata, yerr)
     linearfit(xdata, makeFakeData(fn1func, ydata), yerr)
     linearfit(xdata, makeFakeData(fn2func, ydata), yerr)
     linearfit(xdata, makeFakeData(fn3func, ydata), yerr)
+"""
 
-    """
+
+"""
     print(makeFakeData(fn2func, ydata))
     print(np.var(ydata))
     print(np.cov(ydata))
@@ -129,6 +205,6 @@ def main():
     plt.plot(xdata,yfit)
     plt.show()
 
-    """
+"""
 
 main()
